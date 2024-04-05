@@ -1,12 +1,12 @@
-<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>Relation</id><coordinates><x>570</x><y>250</y><w>310</w><h>140</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;290;10;290;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>270</x><y>910</y><w>190</w><h>50</h></coordinates><panel_attributes>PROFESOR TITULAR(PERSONA)
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>530</x><y>910</y><w>220</w><h>50</h></coordinates><panel_attributes>PROFESOR ASOCIADO(PERSONA)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>370</x><y>140</y><w>210</w><h>190</h></coordinates><panel_attributes>&lt;&lt; abstract&gt;&gt;
+<diagram program="umletino" version="15.1"><zoom_level>7</zoom_level><help_text>Space for diagram notes</help_text><element><id>Relation</id><coordinates><x>399</x><y>203</y><w>217</w><h>98</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;290;10;290;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>161</x><y>665</y><w>133</w><h>35</h></coordinates><panel_attributes>PROFESOR TITULAR(PERSONA)
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>371</x><y>665</y><w>154</w><h>35</h></coordinates><panel_attributes>PROFESOR ASOCIADO(PERSONA)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>259</x><y>126</y><w>147</w><h>133</h></coordinates><panel_attributes>&lt;&lt; abstract&gt;&gt;
 PERSONA
 --
 -Nombre: str
 -DNI: str
 -Direccion: str
 -Sexo: SEXO
---</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>370</x><y>0</y><w>210</w><h>70</h></coordinates><panel_attributes>&lt;&lt;Enum&gt;&gt;
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>259</x><y>28</y><w>147</w><h>49</h></coordinates><panel_attributes>&lt;&lt;Enum&gt;&gt;
 SEXO
 --
 M
@@ -14,16 +14,16 @@ V
 --
 
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>470</x><y>60</y><w>50</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>329</x><y>70</y><w>35</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 m1=1..*
-m2=1</panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>120</x><y>660</y><w>210</w><h>140</h></coordinates><panel_attributes>INVESTIGADOR(PERSONA)
+m2=1</panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>84</x><y>490</y><w>147</w><h>98</h></coordinates><panel_attributes>INVESTIGADOR(PERSONA)
 --
 +Area_Investigacion: str
 -
 +Get_Investigador():
 +Set_Investigador():
 +Del_Investigador():
-+Get_Area_Investigacion():</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>730</x><y>370</y><w>240</w><h>160</h></coordinates><panel_attributes>ESTUDIANTE(PERSONA)
++Get_Area_Investigacion():</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>511</x><y>287</y><w>168</w><h>112</h></coordinates><panel_attributes>ESTUDIANTE(PERSONA)
 --
 -Asignaturas: ASIGNATURA
 --
@@ -34,7 +34,7 @@ m2=1</panel_attributes><additional_attributes>10;80;10;10</additional_attributes
 +desmatricular(asignatura:ASIGNATURA)
 +mostrar_asignaturas():ASIGNATURA
 +asignaturas():list of ASIGNATURA
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>340</x><y>390</y><w>300</w><h>190</h></coordinates><panel_attributes>&lt;&lt;abstract&gt;&gt;
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>238</x><y>301</y><w>210</w><h>133</h></coordinates><panel_attributes>&lt;&lt;abstract&gt;&gt;
 MIEMBRO DEPARTAMENTO (PERSONA)
 --
 -ID:str
@@ -44,7 +44,7 @@ MIEMBRO DEPARTAMENTO (PERSONA)
 -cambioDepartamento(nuevo_departamento):None
 -devolverDatos():str
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>310</y><w>30</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;80</additional_attributes></element><element><id>UMLClass</id><coordinates><x>530</x><y>650</y><w>210</w><h>150</h></coordinates><panel_attributes>PROFESOR(PERSONA)
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>336</x><y>245</y><w>21</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;80</additional_attributes></element><element><id>UMLClass</id><coordinates><x>371</x><y>483</y><w>147</w><h>105</h></coordinates><panel_attributes>PROFESOR(PERSONA)
 --
 +asignaturas: list of ASIGNATURA
 --
@@ -53,7 +53,7 @@ MIEMBRO DEPARTAMENTO (PERSONA)
 +delProfesor():
 +getAsignaturas_impartidas(): ASIGNATURA
 +añadirAsignatura(ASIGNATURA):
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>220</x><y>570</y><w>200</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>180;10;10;90</additional_attributes></element><element><id>Relation</id><coordinates><x>520</x><y>570</y><w>130</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;110;80</additional_attributes></element><element><id>Relation</id><coordinates><x>230</x><y>790</y><w>150</w><h>140</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;130;120</additional_attributes></element><element><id>Relation</id><coordinates><x>380</x><y>790</y><w>200</w><h>140</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>180;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>630</x><y>790</y><w>30</w><h>140</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>930</x><y>610</y><w>210</w><h>190</h></coordinates><panel_attributes>ASIGNATURA
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>154</x><y>427</y><w>140</w><h>77</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>180;10;10;90</additional_attributes></element><element><id>Relation</id><coordinates><x>364</x><y>427</y><w>91</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;110;80</additional_attributes></element><element><id>Relation</id><coordinates><x>161</x><y>581</y><w>77</w><h>98</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;90;120</additional_attributes></element><element><id>Relation</id><coordinates><x>238</x><y>581</y><w>168</w><h>98</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>220;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>441</x><y>581</y><w>21</w><h>98</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>651</x><y>455</y><w>147</w><h>133</h></coordinates><panel_attributes>ASIGNATURA
 --
 +Nombre:str
 +Codigo Asignatura:str
@@ -64,15 +64,15 @@ MIEMBRO DEPARTAMENTO (PERSONA)
 +devolverDatos():str 
 +devolverDepartamento(): Departamento
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>950</x><y>490</y><w>130</w><h>140</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>665</x><y>371</y><w>91</w><h>98</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m1=1..*
-m2=1..*</panel_attributes><additional_attributes>10;10;90;10;90;120</additional_attributes></element><element><id>Relation</id><coordinates><x>720</x><y>710</y><w>230</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=1..*</panel_attributes><additional_attributes>10;10;90;10;90;120</additional_attributes></element><element><id>Relation</id><coordinates><x>504</x><y>525</y><w>161</w><h>28</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m1=1..*
-m2=1..*</panel_attributes><additional_attributes>10;10;210;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>490</y><w>210</w><h>80</h></coordinates><panel_attributes>DEPARTAMENTO(ENUM)
+m2=1..*</panel_attributes><additional_attributes>10;10;210;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>371</y><w>147</w><h>56</h></coordinates><panel_attributes>DEPARTAMENTO(ENUM)
 --
 DIIC
 DITEC
 DIS
-	</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>530</y><w>170</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+	</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>140</x><y>399</y><w>119</w><h>28</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 m1=1
 m2=1</panel_attributes><additional_attributes>150;10;10;10</additional_attributes></element></diagram>
