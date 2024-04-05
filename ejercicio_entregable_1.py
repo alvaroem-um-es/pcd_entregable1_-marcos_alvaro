@@ -14,11 +14,10 @@ class Departamento(Enum):
 
 class Persona:
     def __init__(self, nombre, dni, direccion, sexo):
-        self.nomnbre = nombre
+        self.nombre = nombre
         self.dni = dni
         self.direccion = direccion
         self.sexo = sexo
-
 
 
 class MiembroDepartamento(Persona):
@@ -36,9 +35,27 @@ class MiembroDepartamento(Persona):
     def devolver_datos(self):
         return f"ID: {self.id}, Nombre: {self.nombre}, DNI: {self.dni}, Dirección: {self.direccion}, Sexo: {self.sexo}, Departamento: {self.departamento}"
 
+
+
 class Estudiante(Persona):
     def __init__(self, nombre, dni, direccion, sexo):
         super().__init__(nombre, dni, direccion, sexo)
+        self.asignaturas = []
+
+    def get_estudiante(self):
+        return f"Nombre: {self.nombre}, DNI: {self.dni}, Dirección: {self.direccion}, Sexo: {self.sexo}, Asignaturas: {self.mostrar_asignaturas()}"
+
+    def set_estudiante(self, nombre, dni, direccion, sexo):
+        self.nombre = nombre
+        self.dni = dni
+        self.direccion = direccion
+        self.sexo = sexo
+
+    def del_estudiante(self):
+        self.nombre = None
+        self.dni = None
+        self.direccion = None
+        self.sexo = None
         self.asignaturas = []
 
     def matricular(self, asignatura):
@@ -51,6 +68,8 @@ class Estudiante(Persona):
     def mostrar_asignaturas(self):
         return [asignatura.nombre for asignatura in self.asignaturas]
 
+
+
 class Asignatura:
     def __init__(self, nombre, codigo, creditos, departamento):
         self.nombre = nombre
@@ -61,13 +80,39 @@ class Asignatura:
     def devolver_datos(self):
         return f"Nombre: {self.nombre}, Código: {self.codigo}, Créditos: {self.creditos}, Departamento: {self.departamento}"
 
+
+
 class Investigador(MiembroDepartamento):
     def __init__(self, nombre, dni, direccion, sexo, id, departamento, area_investigacion):
         super().__init__(nombre, dni, direccion, sexo, id, departamento)
         self.area_investigacion = area_investigacion
+    
+
+    def get_investigador(self):
+        return f"Nombre: {self.nombre}, DNI: {self.dni}, Dirección: {self.direccion}, Sexo: {self.sexo}, ID: {self.id}, Departamento: {self.departamento}, Área de Investigación: {self.area_investigacion}"
+
+    def set_investigador(self, nombre, dni, direccion, sexo, id, departamento, area_investigacion):
+        self.nombre = nombre
+        self.dni = dni
+        self.direccion = direccion
+        self.sexo = sexo
+        self.id = id
+        self.departamento = departamento
+        self.area_investigacion = area_investigacion
+
+    def del_investigador(self):
+        self.nombre = None
+        self.dni = None
+        self.direccion = None
+        self.sexo = None
+        self.id = None
+        self.departamento = None
+        self.area_investigacion = None
 
     def get_area_investigacion(self):
         return self.area_investigacion
+
+
 
 class Profesor(MiembroDepartamento):
     def __init__(self, nombre, dni, direccion, sexo, id, departamento):
@@ -80,11 +125,17 @@ class Profesor(MiembroDepartamento):
     def get_asignaturas_impartidas(self):
         return [asignatura.nombre for asignatura in self.asignaturas_impartidas]
 
-class ProfesorTitular(Profesor):
+
+
+class ProfesorTitular(Profesor, Investigador):
     pass
+
+
 
 class ProfesorAsociado(Profesor):
     pass
+
+
 
 # Ejemplo de uso
 if __name__ == "__main__":
