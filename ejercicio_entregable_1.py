@@ -118,6 +118,27 @@ class Profesor(MiembroDepartamento):
     def __init__(self, nombre, dni, direccion, sexo, id, departamento):
         super().__init__(nombre, dni, direccion, sexo, id, departamento)
         self.asignaturas_impartidas = []
+    
+    def get_profesor(self):
+        return f"Nombre: {self.nombre}, DNI: {self.dni}, Dirección: {self.direccion}, Sexo: {self.sexo}, ID: {self.id}, Departamento: {self.departamento}, Asignaturas Impartidas: {self.asignaturas_impartidas}"
+
+    def set_profesor(self, nombre, dni, direccion, sexo, id, departamento, asignaturas_impartidas):
+        self.nombre = nombre
+        self.dni = dni
+        self.direccion = direccion
+        self.sexo = sexo
+        self.id = id
+        self.departamento = departamento
+        self.asignaturas_impartidas = asignaturas_impartidas
+
+    def del_profesor(self):
+        self.nombre = None
+        self.dni = None
+        self.direccion = None
+        self.sexo = None
+        self.id = None
+        self.departamento = None
+        self.asignaturas_impartidas = None
 
     def añadir_asignatura(self, asignatura):
         self.asignaturas_impartidas.append(asignatura)
@@ -128,12 +149,18 @@ class Profesor(MiembroDepartamento):
 
 
 class ProfesorTitular(Profesor, Investigador):
-    pass
+    def __init__(self, nombre, dni, direccion, sexo, id, departamento, area_investigacion):
+        super().__init__(nombre, dni, direccion, sexo, id, departamento)
+        super(ProfesorTitular, self).__init__(nombre, dni, direccion, sexo, id, departamento, area_investigacion)
+
 
 
 
 class ProfesorAsociado(Profesor):
-    pass
+    def __init__(self, nombre, dni, direccion, sexo, id, departamento):
+        super().__init__(nombre, dni, direccion, sexo, id, departamento)
+        self.asignaturas_impartidas = []
+    
 
 
 
@@ -150,3 +177,8 @@ if __name__ == "__main__":
     investigador.cambio_departamento(nuevo_departamento)
     print("Nuevo departamento:", investigador.devolver_departamento())
 
+    profe = ProfesorTitular("Paco","09224070N","Av Libertad", Sexo.M, "ID002", departamento_DIIC, "Matemáticas")
+    print(profe.get_profesor())  # Obtener información del profesor (heredado de Profesor)
+    print(profe.get_investigador()) #heredo de investigador
+    profe.añadir_asignatura(Asignatura("Matemáticas"))
+    print(profe.get_asignaturas_impartidas())
