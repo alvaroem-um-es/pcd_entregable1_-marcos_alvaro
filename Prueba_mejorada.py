@@ -1,6 +1,23 @@
 from enum import Enum
 from abc import ABCMeta, abstractmethod
 
+class AsignaturaCreditosError(Exception):
+    pass
+
+class AsignaturaDepartamentoError(Exception):
+    pass
+
+class ProfesorAsignaturaError(Exception):
+    pass
+
+class EstudianteAsignaturaError(Exception):
+    pass
+
+class DniFormatoError(Exception):
+    pass
+
+
+
 class Sexo(Enum):
     M = 'Masculino'
     V = 'Femenino'
@@ -13,10 +30,16 @@ class Departamento(Enum):
 
 class Persona:
     def __init__(self, nombre, dni, direccion, sexo):
+        if not self._es_formato_dni_valido(dni):
+            raise DniFormatoError("El formato del DNI no es válido.")
         self.nombre = nombre
         self.dni = dni
         self.direccion = direccion
         self.sexo = sexo
+
+    def _es_formato_dni_valido(self, dni):
+        # Verificar que el DNI tiene el formato correcto (por ejemplo, 8 dígitos)
+        return len(dni) == 8 and dni.isdigit()
 
 
 class MiembroDepartamento(Persona):
@@ -57,7 +80,17 @@ class Estudiante(Persona):
         self.asignaturas = []
 
     def matricular(self, asignatura):
-        self.asignaturas.append(asignatura)
+        try:
+            if not isinstance(asignatura, Asignatura):
+                raise EstudianteAsignaturaError("La asignatura proporcionada no es válida.")
+
+            if asignatura.creditos > 6:
+                raise EstudianteAsignaturaError("La asignatura tiene demasiados créditos para ser matriculada por un estudiante.")
+            
+            self.asignaturas.append(asignatura)
+
+        except EstudianteAsignaturaError as e:
+            print(f"Error al matricular estudiante: {str(e)}")
 
     def desmatricular(self, asignatura):
         if asignatura in self.asignaturas:
@@ -69,6 +102,11 @@ class Estudiante(Persona):
 
 class Asignatura:
     def __init__(self, nombre, codigo=None, creditos=None, departamento=None): #Si queremos aceptar en test: profe1.añadir_asignatura("Matemáticas"), tenemos q ponerle a nombre, creditos y departamento =None
+        if creditos is not None and not isinstance(creditos, int):
+            raise AsignaturaCreditosError("Los créditos de la asignatura deben ser un número entero.")
+        
+        if departamento is not None and departamento not in Departamento:
+            raise AsignaturaDepartamentoError("El departamento de la asignatura no es válido.")
         self.nombre = nombre
         self.codigo = codigo
         self.creditos = creditos
@@ -135,13 +173,23 @@ class Profesor(MiembroDepartamento):
         self.asignaturas_impartidas = None
 
     def añadir_asignatura(self, asignatura):
-        if isinstance(asignatura, str):
-            asignatura = Asignatura(asignatura)
+        try:
 
-        elif isinstance(asignatura, dict):
-            asignatura = Asignatura(asignatura['nombre'], asignatura['codigo'], asignatura['creditos'], asignatura['departamento'])
+            if isinstance(asignatura, str):
+                asignatura = Asignatura(asignatura)
+
+            elif isinstance(asignatura, dict):
+                asignatura = Asignatura(asignatura['nombre'], asignatura['codigo'], asignatura['creditos'], asignatura['departamento'])
+            
+            if asignatura.departamento != self.departamento:
+                raise ProfesorAsignaturaError("El profesor no pertenece al mismo departamento que la asignatura.")
         
-        self.asignaturas_impartidas.append(asignatura)
+            self.asignaturas_impartidas.append(asignatura)
+        
+        except (AsignaturaCreditosError, AsignaturaDepartamentoError, ProfesorAsignaturaError) as e:
+            print(f"Error al añadir asignatura: {str(e)}")
+
+
 
     def get_asignaturas_impartidas(self):
         return [asignatura.nombre for asignatura in self.asignaturas_impartidas]
@@ -189,4 +237,27 @@ if __name__ == "__main__":
     estudiante1.matricular(Asignatura("Historia", "HIS101", 5, departamento_DITEC))
     print("\nInformación de", estudiante1.nombre + ":")
     print(estudiante1.get_estudiante())
+
+    #Manejo de excepciones:
+    try:
+        asignatura_invalida = Asignatura("Física", creditos="cinco")  # Esto lanzará una excepción AsignaturaCreditosError
+    except AsignaturaCreditosError as e:
+        print(f"Error al crear la asignatura: {str(e)}")
+
+    profesor = Profesor()
+    try:
+        profesor.añadir_asignatura("Matemáticas")  # Esto lanzará una excepción ProfesorAsignaturaError
+    except ProfesorAsignaturaError as e:
+        print(f"Error al añadir asignatura al profesor: {str(e)}")
+
+    estudiante = Estudiante()
+    try:
+        estudiante.matricular("Química")  # Esto lanzará una excepción EstudianteAsignaturaError
+    except EstudianteAsignaturaError as e:
+        print(f"Error al matricular estudiante: {str(e)}")
+
+    try:
+        persona = Persona("Juan", "123456789", "Calle Principal", Sexo.M)  # Esto lanzará una excepción DniFormatoError
+    except DniFormatoError as e:
+        print(f"Error al crear la persona: {str(e)}")
 
