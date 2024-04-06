@@ -1,5 +1,19 @@
+# -------------------------------------------------------------- #
+#  Copyright (c) UMU Corporation. All rights reserved.
+# ######################## PROGRAMACIÓN ORIENTADA A OBJETOS ####################### #
+# ########################  ENTREGABLE 1  ####################### #
+
+
+#### IMPLEMENTACIÓN CÓDIGO PARA GESTOR DE UNIVERSIDADES ####
+
+# -------------------------------------------------------------- #
+
+#### CLASES PARA LAS EXCEPCIONES Y ENUMERACIONES DEL CÓDIGO ####
+
+
 from enum import Enum
 from abc import ABCMeta, abstractmethod
+
 
 class AsignaturaCreditosError(Exception):
     pass
@@ -17,7 +31,6 @@ class DniFormatoError(Exception):
     pass
 
 
-
 class Sexo(Enum):
     M = 'Masculino'
     V = 'Femenino'
@@ -26,6 +39,10 @@ class Departamento(Enum):
     DIIC = 'DIIC'
     DITEC = 'DITEC'
     DIS = 'DIS'
+
+# -------------------------------------------------------------- #
+
+#### CLASES PARA LOS OBJETOS PERTENECIENTES AL ENUNCIADO CON SUS MÉTODOS CORRESPONDIENTES ####
 
 
 class Persona:
@@ -205,6 +222,11 @@ class ProfesorAsociado(Profesor):
     def __init__(self, nombre, dni, direccion, sexo, id, departamento):
         super().__init__(nombre, dni, direccion, sexo, id, departamento)
         self.asignaturas_impartidas = []
+
+
+# -------------------------------------------------------------- #
+
+#### INSTANCIAMIENTO DE LAS CLASES Y COMPROBACIÓN DE ERRORES ####
 
 
 if __name__ == "__main__":
