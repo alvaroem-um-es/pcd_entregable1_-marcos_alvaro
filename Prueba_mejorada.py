@@ -294,21 +294,3 @@ if __name__ == "__main__":
         print(f"Error al matricular estudiante: {str(e)}")
 
  
-
-
- ### FUNCION MATRICULAR ORIGINAL QUE SOLO ACEPTA INSTANCIAS (NO ACEPTA DICCIONARIOS NI STRINGS) ### lanzará error en estudiante.matricular('quimica')
-'''
-    def matricular(self, asignatura):
-        try:
-            if not isinstance(asignatura, Asignatura): 
-                raise EstudianteAsignaturaError("La asignatura proporcionada no es válida.") #se puede hacer como en añadir asignatura para q la tome como valida
-
-            #Sobra, con la excepcion de demasiados creditos es suficiente
-            #if asignatura.creditos > 6: 
-                #raise EstudianteAsignaturaError("La asignatura tiene demasiados créditos para ser matriculada por un estudiante.")
-            
-            self.asignaturas.append(asignatura)
-
-        except EstudianteAsignaturaError as e:
-            print(f"Error al matricular estudiante: {str(e)}")
-'''
