@@ -30,7 +30,6 @@ class EstudianteAsignaturaError(Exception):
 class DniFormatoError(Exception):
     pass
 
-
 class Sexo(Enum):
     M = 'Masculino'
     V = 'Femenino'
@@ -44,19 +43,18 @@ class Departamento(Enum):
 
 #### CLASES PARA LOS OBJETOS PERTENECIENTES AL ENUNCIADO CON SUS MÉTODOS CORRESPONDIENTES ####
 
-
 class Persona:
     def __init__(self, nombre, dni, direccion, sexo):
         if not self._es_formato_dni_valido(dni):
             raise DniFormatoError("El formato del DNI no es válido.")
+        
         self.nombre = nombre
         self.dni = dni
         self.direccion = direccion
         self.sexo = sexo
 
     def _es_formato_dni_valido(self, dni):
-        # Verificar que el DNI tiene el formato correcto (por ejemplo, 8 dígitos)
-        return len(dni) == 8 and dni.isdigit()
+        return len(dni) == 8 and dni.isdigit() #verificar que el DNI tiene el formato correcto (por ejemplo, 8 dígitos)
 
 
 class MiembroDepartamento(Persona):
@@ -98,11 +96,15 @@ class Estudiante(Persona):
 
     def matricular(self, asignatura):
         try:
-            if not isinstance(asignatura, Asignatura):
-                raise EstudianteAsignaturaError("La asignatura proporcionada no es válida.")
+            if isinstance(asignatura, str): 
+                asignatura = Asignatura(asignatura)
 
-            if asignatura.creditos > 6:
-                raise EstudianteAsignaturaError("La asignatura tiene demasiados créditos para ser matriculada por un estudiante.")
+            elif isinstance(asignatura, dict):
+                asignatura = Asignatura(asignatura['nombre'], asignatura['codigo'], asignatura['creditos'], asignatura['departamento'])
+
+            #Sobra, con la excepcion de demasiados creditos es suficiente
+            #if asignatura.creditos > 6: 
+                #raise EstudianteAsignaturaError("La asignatura tiene demasiados créditos para ser matriculada por un estudiante.")
             
             self.asignaturas.append(asignatura)
 
@@ -118,18 +120,22 @@ class Estudiante(Persona):
 
 
 class Asignatura:
-    def __init__(self, nombre, codigo=None, creditos=None, departamento=None): #Si queremos aceptar en test: profe1.añadir_asignatura("Matemáticas"), tenemos q ponerle a nombre, creditos y departamento =None
+    def __init__(self, nombre, codigo=None, creditos=None, departamento=None): #Si queremos aceptar en test: profe1.añadir_asignatura("Matemáticas"), tenemos q ponerle a nombre, creditos y departamento = None
         if creditos is not None and not isinstance(creditos, int):
             raise AsignaturaCreditosError("Los créditos de la asignatura deben ser un número entero.")
         
+        if creditos is not None and creditos > 6:
+            raise AsignaturaCreditosError("Demasiados créditos")
+
         if departamento is not None and departamento not in Departamento:
             raise AsignaturaDepartamentoError("El departamento de la asignatura no es válido.")
+        
         self.nombre = nombre
         self.codigo = codigo
         self.creditos = creditos
         self.departamento = departamento
 
-    def devolver_datos(self): # y departamento 
+    def devolver_datos(self):  
         return f"Nombre: {self.nombre}, Código: {self.codigo}, Créditos: {self.creditos}, Departamento: {self.departamento}"
 
 
@@ -191,22 +197,19 @@ class Profesor(MiembroDepartamento):
 
     def añadir_asignatura(self, asignatura):
         try:
-
-            if isinstance(asignatura, str):
-                asignatura = Asignatura(asignatura)
+            if isinstance(asignatura, str): 
+                asignatura = Asignatura(asignatura, departamento=self.departamento) #ponemos lo de departamento para q se cree una instancia con el mismo departamento del profesor y no de error. Ahora acepta strings y salta el error cuando el departamento es distinto 
 
             elif isinstance(asignatura, dict):
                 asignatura = Asignatura(asignatura['nombre'], asignatura['codigo'], asignatura['creditos'], asignatura['departamento'])
-            
-            if asignatura.departamento != self.departamento:
+
+            if asignatura.departamento != self.departamento: 
                 raise ProfesorAsignaturaError("El profesor no pertenece al mismo departamento que la asignatura.")
         
             self.asignaturas_impartidas.append(asignatura)
         
         except (AsignaturaCreditosError, AsignaturaDepartamentoError, ProfesorAsignaturaError) as e:
             print(f"Error al añadir asignatura: {str(e)}")
-
-
 
     def get_asignaturas_impartidas(self):
         return [asignatura.nombre for asignatura in self.asignaturas_impartidas]
@@ -235,12 +238,12 @@ if __name__ == "__main__":
     departamento_DITEC = Departamento.DITEC
 
     # Crear instancias de Profesores
-    profe1 = ProfesorTitular("Paco", "09224070N", "Av Libertad", Sexo.M, "ID001", departamento_DIIC, "Matemáticas")
-    profe2 = ProfesorAsociado("Ana", "12345678B", "Calle Principal", Sexo.V, "ID002", departamento_DITEC)
+    profe1 = ProfesorTitular("Paco", "09224070", "Av Libertad", Sexo.M, "ID001", departamento_DIIC, "Matemáticas")
+    profe2 = ProfesorAsociado("Ana", "12345679", "Calle Principal", Sexo.V, "ID002", departamento_DITEC)
 
     # Añadir asignaturas a los profesores
     profe1.añadir_asignatura("Matemáticas")
-    profe1.añadir_asignatura(Asignatura("Física", "FIS101", 4, departamento_DIIC))
+    profe1.añadir_asignatura(Asignatura("Física", "FIS101", 6, departamento_DIIC))
     profe2.añadir_asignatura({"nombre": "Lengua", "codigo": "INF101", "creditos": 3, "departamento": departamento_DITEC})
 
     # Mostrar las asignaturas impartidas por cada profesor
@@ -254,9 +257,15 @@ if __name__ == "__main__":
     profe1.cambio_departamento(departamento_DITEC)
     print("\nNuevo departamento de", profe1.nombre + ":", profe1.devolver_departamento())
 
-    # Mostrar información de un estudiante
-    estudiante1 = Estudiante("Maria", "98765432C", "Calle Secundaria", Sexo.V)
+    # Crear instancia de un estudiante
+    estudiante1 = Estudiante("Maria", "98765432", "Calle Secundaria", Sexo.V)
+
+    # Matricular asignaturas al estudiante
     estudiante1.matricular(Asignatura("Historia", "HIS101", 5, departamento_DITEC))
+    estudiante1.matricular('Lengua')
+    estudiante1.matricular({"nombre": "Fisica", "codigo": "INF101", "creditos": 5, "departamento": departamento_DITEC})
+
+    # Mostrar la información del estudiante 
     print("\nInformación de", estudiante1.nombre + ":")
     print(estudiante1.get_estudiante())
 
@@ -266,15 +275,20 @@ if __name__ == "__main__":
     except AsignaturaCreditosError as e:
         print(f"Error al crear la asignatura: {str(e)}")
 
-    profesor = Profesor()
     try:
-        profesor.añadir_asignatura("Matemáticas")  # Esto lanzará una excepción ProfesorAsignaturaError
+        asignatura_invalida2 = Asignatura(Asignatura("Física", "FIS101", 8, departamento_DIIC))  # Esto lanzará una excepción AsignaturaCreditosError, muchos créditos
+    except AsignaturaCreditosError as e:
+        print(f"Error al crear la asignatura: {str(e)}")
+
+    profesor = Profesor("Ana", "12345679", "Calle Principal", Sexo.V, "ID002", departamento_DITEC) 
+    try:
+        profesor.añadir_asignatura("Matemáticas")  # Esto lanzará una excepción ProfesorAsignaturaError. No da ya q se ha cambiado la funcion de añadir_asignatura
     except ProfesorAsignaturaError as e:
         print(f"Error al añadir asignatura al profesor: {str(e)}")
 
-    estudiante = Estudiante()
+    estudiante = Estudiante("Maria", "98765432", "Calle Secundaria", Sexo.V)
     try:
-        estudiante.matricular("Química")  # Esto lanzará una excepción EstudianteAsignaturaError
+        estudiante.matricular("Química")  # Esto lanzará una excepción EstudianteAsignaturaError. No da ya q se ha cambiado la funcion de matricular 
     except EstudianteAsignaturaError as e:
         print(f"Error al matricular estudiante: {str(e)}")
 
@@ -283,3 +297,27 @@ if __name__ == "__main__":
     except DniFormatoError as e:
         print(f"Error al crear la persona: {str(e)}")
 
+    try:
+        estudiante.matricular(Asignatura("Historia", "HIS101", 9, departamento_DITEC))  # Esto lanzará una excepción AsignaturaCreditosError
+    except AsignaturaCreditosError as e:
+        print(f"Error al matricular estudiante: {str(e)}")
+
+ 
+
+
+ ### FUNCION MATRICULAR ORIGINAL QUE SOLO ACEPTA INSTANCIAS (NO ACEPTA DICCIONARIOS NI STRINGS) ### lanzará error en estudiante.matricular('quimica')
+'''
+    def matricular(self, asignatura):
+        try:
+            if not isinstance(asignatura, Asignatura): 
+                raise EstudianteAsignaturaError("La asignatura proporcionada no es válida.") #se puede hacer como en añadir asignatura para q la tome como valida
+
+            #Sobra, con la excepcion de demasiados creditos es suficiente
+            #if asignatura.creditos > 6: 
+                #raise EstudianteAsignaturaError("La asignatura tiene demasiados créditos para ser matriculada por un estudiante.")
+            
+            self.asignaturas.append(asignatura)
+
+        except EstudianteAsignaturaError as e:
+            print(f"Error al matricular estudiante: {str(e)}")
+'''
