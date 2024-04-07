@@ -1,47 +1,71 @@
 import pytest
-from ejercicio_entregable_1 import ProfesorTitular, ProfesorAsociado, Estudiante, Asignatura, Departamento, Sexo, Profesor, Persona
+from Prueba_mejorada import *
 
-# Crear instancias de Departamento
-departamento_DIIC = Departamento.DIIC
-departamento_DITEC = Departamento.DITEC
+#Prueba de creación de instancias de clases
+def test_creacion_instancias():
+    departamento_DIIC = Departamento.DIIC
+    departamento_DITEC = Departamento.DITEC
+    asignatura = Asignatura("Matemáticas", "MAT101", 5, departamento_DIIC)
+    profesor = ProfesorTitular("Paco", "09224070", "Av Libertad", Sexo.M, "ID001", departamento_DIIC, "Matemáticas")
+    profesor2 = ProfesorAsociado("Ana", "12345679", "Calle Principal", Sexo.V, "ID002", departamento_DITEC)
+    estudiante = Estudiante("Maria", "98765432", "Calle Secundaria", Sexo.V)
+    
+    assert isinstance(departamento_DIIC, Departamento)
+    assert isinstance(departamento_DITEC, Departamento)
+    assert isinstance(asignatura, Asignatura)
+    assert isinstance(profesor, ProfesorTitular)
+    assert isinstance(profesor2, ProfesorAsociado)
+    assert isinstance(estudiante, Estudiante)
 
-# Crear instancias de Profesores
-profe1 = ProfesorTitular("Paco", "09224070", "Av Libertad", Sexo.M, "ID001", departamento_DIIC, "Matemáticas")
-profe2 = ProfesorAsociado("Ana", "12345679", "Calle Principal", Sexo.V, "ID002", departamento_DITEC)
+#Pruebas para la clase Asignatura
+def test_creacion_asignatura():
+    departamento_DIIC = Departamento.DIIC
+    asignatura = Asignatura("Matemáticas", "MAT101", 5, departamento_DIIC)
+    assert asignatura.nombre == "Matemáticas"
+    assert asignatura.codigo == "MAT101"
+    assert asignatura.creditos == 5
+    assert asignatura.departamento == departamento_DIIC
 
+def test_creditos_excesivos():
+    departamento_DIIC = Departamento.DIIC
+    with pytest.raises(AsignaturaCreditosError):
+        Asignatura("Física", "FIS101", 8, departamento_DIIC)
+
+#Pruebas para la clase Profesor
 def test_profesor_añadir_asignatura():
-    #profe1.añadir_asignatura("mlml")
-    profe1.añadir_asignatura(Asignatura("Física", "FIS101", 4, departamento_DIIC))
-    profe1.añadir_asignatura(Asignatura("Mates", "M1T3s", 5, departamento_DIIC))
-    profe2.añadir_asignatura(Asignatura("Lengua", "LenG", 12, departamento_DITEC))
-    profe2.añadir_asignatura(Asignatura("Historia", "HisT", 1, departamento_DITEC))
-    #profe2.añadir_asignatura({"nombre": "lolo", "codigo": "INF101", "creditos": 3, "departamento": departamento_DITEC})
-
-def test_profesor_asignatura_impartida():
-    # Mostrar las asignaturas impartidas por cada profesor
-    print("Asignaturas impartidas por", profe1.nombre + ":")
-    print(profe1.get_asignaturas_impartidas())
-
-    print("\nAsignaturas impartidas por", profe2.nombre + ":")
-    print(profe2.get_asignaturas_impartidas())
+    departamento_DIIC = Departamento.DIIC
+    profesor = ProfesorTitular("Paco", "09224070", "Av Libertad", Sexo.M, "ID001", departamento_DIIC, "Matemáticas")
+    profesor.añadir_asignatura(Asignatura("Física", "FIS101", 4, departamento_DIIC))
+    profesor.añadir_asignatura("Historia")
+    profesor.añadir_asignatura({"nombre": "Lengua", "codigo": "INF101", "creditos": 3, "departamento": departamento_DIIC})
+    assert len(profesor.asignaturas_impartidas) == 3
+    assert profesor.asignaturas_impartidas[1].nombre == "Historia"
+    assert profesor.get_asignaturas_impartidas() == ['Física', 'Historia', 'Lengua']
 
 def test_cambio_departamento():
-    profe1.cambio_departamento(departamento_DITEC)
-    print("\nNuevo departamento de", profe1.nombre + ":", profe1.devolver_departamento())
+    departamento_DIIC = Departamento.DIIC
+    departamento_DITEC = Departamento.DITEC
+    profesor = ProfesorTitular("Paco", "09224070", "Av Libertad", Sexo.M, "ID001", departamento_DIIC, "Matemáticas")
+    profesor.cambio_departamento(departamento_DITEC)
+    assert profesor.departamento == departamento_DITEC
 
-def test_mostrar_info_estudiante():
-    estudiante1 = Estudiante("Maria", "98765432", "Calle Secundaria", Sexo.V)
-    estudiante1.matricular(Asignatura("Historia", "HIS101", 5, departamento_DITEC))
-    #estudiante1.matricular('Lengua')
-    print("\nInformación de", estudiante1.nombre + ":")
-    print(estudiante1.get_estudiante())
+#Pruebas para la clase Estudiante
+def test_matricular_asignatura_estudiante():
+    estudiante = Estudiante("Maria", "98765432", "Calle Secundaria", Sexo.V)
+    estudiante.matricular("Matemáticas")
+    assert len(estudiante.asignaturas) == 1
+    assert estudiante.asignaturas[0].nombre == "Matemáticas"
 
+def test_matricular_asignatura_creditos_excesivos():
+    departamento_DIIC = Departamento.DIIC
+    estudiante = Estudiante("Maria", "98765432", "Calle Secundaria", Sexo.V)
+    with pytest.raises(AsignaturaCreditosError):
+        estudiante.matricular(Asignatura("Física", "FIS101", 8, departamento_DIIC))
 
-
-
-
-
-
-
-
-
+#Prueba de relación entre clases
+def test_relaciones_entre_clases():
+    departamento_DIIC = Departamento.DIIC
+    profesor = ProfesorTitular("Paco", "09224070", "Av Libertad", Sexo.M, "ID001", departamento_DIIC, "Matemáticas")
+    assert isinstance(profesor, Investigador)
+    assert isinstance(profesor, Profesor)
+    assert hasattr(profesor, "asignaturas_impartidas")
