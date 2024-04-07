@@ -115,7 +115,7 @@ class Investigador(MiembroDepartamento):
 
 
 class Profesor(MiembroDepartamento):
-    def __init__(self, nombre, dni, direccion, sexo, id, departamento):
+    def __init__(self, nombre, dni, direccion, sexo, id, departamento, asignaturas_impartidas):
         super().__init__(nombre, dni, direccion, sexo, id, departamento)
         self.asignaturas_impartidas = []
     
@@ -177,8 +177,11 @@ if __name__ == "__main__":
     investigador.cambio_departamento(nuevo_departamento)
     print("Nuevo departamento:", investigador.devolver_departamento())
 
-    profe = ProfesorTitular("Paco","09224070N","Av Libertad", Sexo.M, "ID002", departamento_DIIC, "Matemáticas")
-    print(profe.get_profesor())  # Obtener información del profesor (heredado de Profesor)
-    print(profe.get_investigador()) #heredo de investigador
-    profe.añadir_asignatura(Asignatura("Matemáticas"))
-    print(profe.get_asignaturas_impartidas())
+    # profe = ProfesorTitular("Paco","09224070N","Av Libertad", Sexo.M, "ID002", departamento_DIIC, "Matemáticas")
+    # print(profe.get_profesor())  # Obtener información del profesor (heredado de Profesor)
+    # print(profe.get_investigador()) #heredo de investigador
+    # profe.añadir_asignatura(Asignatura("Matemáticas"))
+    # print(profe.get_asignaturas_impartidas())
+
+
+    profesor_titular = ProfesorTitular("Reinildo", "01234560U", "Calle Melancolía", Sexo.M, "ID123", Departamento.DIIC, "Nalgota")
